@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+                                   
+        <title>Quotify Project </title>
+    </head>
+    <body>
+        <style>
+             #body{
+                text-align:center;
+                margin: auto;
+                width: 60%;
+                border: 3px solid #73AD21;
+                padding: 10px;
+                }
+                </style>
+        <h1>Quotify</h1>
+            <a href="index.html">Random Quote(API)</a> |
+            <a href="#">Random Quote(Local)</a> |
+            <a href="version-4.html">Add Quote(local)</a> |
+            <a href="version-5.html">List All Quotes(local)</a>
+
+        <div id="root">
+                <blockquote class="blockquote text-center" id="quote">
+                        
+                </blockquote>
+
+        </div>
+        
+        <button id="btn" type="button" class="btn btn-info">Get Another quote</button>
+        
+    <script>
+        let btnHandle = document.getElementById('btn');
+        //let btnSaveHandle = document.getElementById('btnsave');
+        let quoteHandle = document.getElementById('quote');
+        let pTag = document.createElement('p');
+        let qTag = document.createElement('q');
+        let spanTag= document.createElement('span');
+
+        function savedLocalQuotes(){
+            let localQuotes = JSON.parse(localStorage.getItem('localQuotes'));
+            let randomQuotes = Math.floor(Math.random()*localQuotes.length);
+            qTag.innerHTML = `${localQuotes[randomQuotes].quote}`;
+            spanTag.innerHTML = `~ ${localQuotes[randomQuotes].author}`;
+            pTag.appendChild(qTag);
+            pTag.appendChild(spanTag);
+            quoteHandle.appendChild(pTag);
+            console.log(localQuotes[randomQuotes]);
+            console.log(localQuotes);
+
+        }
+
+        window.onload = function(){
+            savedLocalQuotes();
+        }
+
+        btnHandle.addEventListener('click',function(){
+            savedLocalQuotes();
+        },false);
+
+
+
+        
+        
+        
+    </script>
+    </body>
+</html>

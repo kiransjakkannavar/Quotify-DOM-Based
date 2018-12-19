@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+                                   
+        <title>Quotify Project </title>       
+    </head>
+    <body>
+        <style>
+             #body{
+                text-align:center;
+                margin: auto;
+                width: 60%;
+                border: 3px solid #73AD21;
+                padding: 10px;
+                }
+                </style>
+        <h1>Quotify</h1>
+            <a href="">Random Quote(API)</a> |
+            <a href="version-3.html">Random Quote(Local)</a> |
+            <a href="version-4.html">Add Quote(local)</a> |
+            <a href="version-5.html">List All Quotes(local)</a>
+
+        <div id="root">
+                <blockquote class="blockquote text-center" id="quote">
+                        
+                </blockquote>
+
+        </div>
+        
+        <button id="btn" type="button" class="btn btn-info">Get Another quote</button>
+        <button id="btnsave" type="button" class="btn btn-success">Save to Local</button>
+    <script>
+        let btnHandle = document.getElementById('btn');
+        let btnSaveHandle = document.getElementById('btnsave');
+        let quoteHandle = document.getElementById('quote');
+        let pTag = document.createElement('p');
+        let qTag = document.createElement('q');
+        let spanTag= document.createElement('span');
+
+        function getQuote(){
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET','https://talaikis.com/api/quotes/random/');
+            xhr.send();
+            xhr.onload = function (){
+                users = JSON.parse(xhr.responseText);
+                console.log(users);
+                qTag.innerHTML = `${users.quote}`;
+                spanTag.innerHTML = `~ ${users.author}`;
+                pTag.appendChild(qTag);
+                pTag.appendChild(spanTag);
+                quoteHandle.appendChild(pTag);
+
+            }
+            btnSaveHandle.innerHTML = 'Save to Local';
+        }
+        window.onload  = function(){
+                 getQuote();
+                 btnSaveHandle.disabled = false;
+               }
+               btnHandle.addEventListener('click',function(){
+                   getQuote();
+                   btnSaveHandle.disabled = false;
+               },false); 
+                                  
+                btnSaveHandle.addEventListener('click',function(){
+                    let localQuotes= localStorage.getItem('localQuotes') ? JSON.parse(localStorage.getItem('localQuotes')) : [];
+                localQuotes.push(users);
+                localStorage.setItem('localQuotes',JSON.stringify(localQuotes));
+                if(btnSaveHandle.innerHTML == 'Save to Local'){
+                    btnSaveHandle.innerHTML = 'saved';
+                    btnSaveHandle.disabled = true;
+
+                }
+                console.log(localQuotes);
+                
+                
+                },false);
+
+        
+        
+        
+    </script>
+    </body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+                                   
+        <title>Quotify Project </title>
+    </head>
+    <body>
+        <style>
+             #body{
+                text-align:center;
+                margin: auto;
+                width: 60%;
+                border: 3px solid #73AD21;
+                padding: 10px;
+                }
+                </style>
+        <h1>Quotify</h1>
+            <a href="index.html">Random Quote(API)</a> |
+            <a href="version-3.html">Random Quote(Local)</a> |
+            <a href="version-4.html">Add Quote(local)</a> |
+            <a href= "#">List All Quotes(local)</a>
+            </br>
+
+        <div id="root">
+            
+                
+
+        </div>
+                      
+    <script>
+        let rootHandle = document.getElementById('root');
+                  
+        var localQuotes = JSON.parse(localStorage.getItem("localQuotes"));
+            function listAllQuotes(){
+                rootHandle.innerHTML='';
+                var localQuotes = JSON.parse(localStorage.getItem("localQuotes"));                
+                for(let i = 0; i < localQuotes.length; i ++){
+                    let pTag = document.createElement('p');
+                    let qTag = document.createElement('q');
+                    let spanTag= document.createElement('span');
+                    let brTag = document.createElement('br');
+                    let hrTag = document.createElement('hr');                    
+                    let deletebtnHandle = document.createElement('BUTTON');
+                    let editbtnHandle = document.createElement('BUTTON');
+                    deletebtnHandle.innerText = "Delete";
+                    editbtnHandle.innerText = "Edit"
+                    qTag.innerHTML = `${localQuotes[i].quote}`;
+                    spanTag.innerHTML = `~ ${localQuotes[i].author}`;
+                    pTag.appendChild(qTag);
+                    spanTag.appendChild(brTag);
+                    pTag.appendChild(spanTag);                    
+                    rootHandle.appendChild(pTag);
+                    rootHandle.appendChild(hrTag);
+                    deletebtnHandle.setAttribute("value", i);
+                    editbtnHandle.setAttribute("value",i);
+                    pTag.appendChild(deletebtnHandle);
+                    pTag.appendChild(editbtnHandle);
+                    pTag.setAttribute("id", i);
+                    deletebtnHandle.setAttribute('class','dynamicDelete');                    
+                    deletebtnHandle.setAttribute('onclick','deleteLocalQuote(value)'); 
+                    editbtnHandle.setAttribute('class', 'dynamicEdit');            
+                    editbtnHandle.setAttribute('onclick','editLocalQuote(value)');
+                
+                }                         
+            
+            }    
+
+          
+            window.onload = function(){
+                listAllQuotes();
+            }  
+            
+            function deleteLocalQuote(val)
+            {                    
+                let localQuotes=JSON.parse(localStorage.getItem('localQuotes'));
+                localQuotes.splice(val,1);
+                localStorage.setItem('localQuotes',JSON.stringify(localQuotes));
+                rootHandle.innerHTML = "";
+                listAllQuotes();
+            }
+
+            function editLocalQuote(val){
+                var localQuotes = JSON.parse(localStorage.getItem("localQuotes"));
+                    //debugger
+                //let j = Number(val)
+// <!-- 
+//                 let j = Number(val);
+//                 let k = Number(val) + 1;
+//                 let l = Number(val) + 2; -->
+               
+               let pTag = document.getElementById(val);
+               document.getElementById(val).innerHTML = "";
+            
+                let textareaquoteHandle = document.createElement('textarea');
+                let textareaauthorHandle = document.createElement('textarea');
+                let updatebtnHandle = document.createElement('BUTTON');
+                let cancelHandle = document.createElement('BUTTON');
+                updatebtnHandle.innerText = "Update";
+                cancelHandle.innerText = "Cancel"
+                textareaquoteHandle.value = localQuotes[Number(val)].quote;
+                textareaauthorHandle.value = localQuotes[Number(val)].author;
+                pTag.appendChild(textareaquoteHandle);
+                pTag.appendChild(textareaauthorHandle);
+                pTag.appendChild(updatebtnHandle);
+                pTag.appendChild(cancelHandle);
+                updatebtnHandle.setAttribute("value",Number(val));
+                updatebtnHandle.setAttribute("onclick","updateQuote(value)");
+                
+                // cancelHandle.setAttribute("value",Number(val));
+                cancelHandle.setAttribute("onclick", "cancelUpdate()");
+                textareaquoteHandle.setAttribute("id",'quoteArea' );
+                textareaauthorHandle.setAttribute("id",'authorArea');                
+
+            }            
+
+            function updateQuote(val){ 
+                   
+
+                // let j = Number(val)+1;
+                // let k= Number(val)+2;            
+                let pTag = document.getElementById(val);
+                
+                
+                let textareaquoteHandle = document.getElementById('quoteArea');
+                let textareaauthorHandle = document.getElementById('authorArea');
+                pTag.innerHTML = "";
+                
+                let qTag = document.createElement("q");
+                let spanTag = document.createElement("span") 
+                
+                qTag.innerHTML = textareaquoteHandle.value;
+                spanTag.innerHTML = textareaauthorHandle.value;
+                pTag.appendChild(qTag);
+                pTag.appendChild(spanTag);
+                let editedNewQuote={
+                    quote:textareaquoteHandle.value,
+                    author:textareaauthorHandle.value
+                };
+                let localQuotes=JSON.parse(localStorage.getItem('localQuotes'));
+                localQuotes[val]=editedNewQuote;
+                //debugger
+                localStorage.setItem('localQuotes',JSON.stringify(localQuotes));            
+                listAllQuotes();
+                
+                console.log(localQuotes[val]);
+                console.log(editedNewQuote.quote);
+                console.log(editedNewQuote.author);  
+
+            }
+        
+            function cancelUpdate(){
+                listAllQuotes();
+            }
+    </script>
+    </body>
+</html>
